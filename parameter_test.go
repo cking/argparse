@@ -13,7 +13,7 @@ var _ = Describe("Parameter", func() {
 		input := "this is the test string"
 
 		It("should match the test string", func() {
-			Expect(param.Matches(input)).To(Equal(true))
+			Expect(param.Matches(input)).To(BeTrue())
 		})
 		It("should convert the match to string", func() {
 			vMatch, _, _ := param.Match(input)
