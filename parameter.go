@@ -16,10 +16,6 @@ type Parameter struct {
 }
 
 func defaultMatcher(input string) (string, string, bool) {
-	if !defaultMatcherRegExp.MatchString(input) {
-		return "", input, false
-	}
-
 	matches := defaultMatcherRegExp.FindStringSubmatch(input)
 	return matches[1], input[len(matches[0]):], true
 }
