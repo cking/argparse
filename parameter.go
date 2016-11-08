@@ -3,6 +3,17 @@ package argparse
 import (
 	"errors"
 	"regexp"
+	"strconv"
+)
+
+// ParameterMatcher defines the default matching algorithms
+type ParameterMatcher int
+
+const (
+	// StringMatcher returns the default implementation
+	StringMatcher ParameterMatcher = 0
+	// IntegerMatcher converts the input to an integer
+	IntegerMatcher = iota
 )
 
 var (
@@ -29,6 +40,21 @@ func NewParameter() *Parameter {
 	return &Parameter{defaultMatcher, defaultConverter}
 }
 
+// NewDefaultParameter creates a new parameter definition using one of the default sets
+func NewDefaultParameter(matcher ParameterMatcher) *Parameter {
+	param := NewParameter()
+
+	switch matcher {
+	case IntegerMatcher:
+		param.SetMatcherRegexp(regexp.MustCompile(`^(\d+)`))
+		param.SetConverter(func(input string) (interface{}, error) {
+			return strconv.Atoi(input)
+		})
+	}
+
+	return param
+}
+
 // Matches returns a flag if the input matches the expected format
 func (p *Parameter) Matches(input string) bool {
 	_, _, ok := p.matcher(input)
@@ -49,6 +75,18 @@ func (p *Parameter) Match(input string) (interface{}, string, error) {
 // SetMatcher sets the matching algorithm for this parameter
 func (p *Parameter) SetMatcher(matcher func(string) (string, string, bool)) {
 	p.matcher = matcher
+}
+
+// SetMatcherRegexp sets the matching algorithm using a regexp
+func (p *Parameter) SetMatcherRegexp(re *regexp.Regexp) {
+	p.SetMatcher(func(input string) (string, string, bool) {
+		if !re.MatchString(input) {
+			return "", input, false
+		}
+
+		matches := re.FindStringSubmatch(input)
+		return matches[1], input[len(matches[0]):], true
+	})
 }
 
 // SetConverter changes the convert function
