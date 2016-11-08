@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	defaultMatcherRegExp = regexp.MustCompile(`^(\S*)`)
+	defaultMatcherRegExp = regexp.MustCompile(`^([-_\w\d]*)`)
 )
 
 // Parameter object
