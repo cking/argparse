@@ -1,6 +1,7 @@
 package argparse
 
 import (
+	"errors"
 	"regexp"
 	"strings"
 )
@@ -28,30 +29,31 @@ func defaultConverter(input string) (interface{}, error) {
 	return input, nil
 }
 
-func newParameter() *Parameter {
+// NewParameter creates a new parameter definition
+func NewParameter() *Parameter {
 	return &Parameter{defaultMatcher, defaultConverter}
 }
 
 // Matches returns a flag if the input matches the expected format
 func (p *Parameter) Matches(input string) bool {
 	_, _, ok := p.matcher(input)
-	return !ok
+	return ok
 }
 
 // Match splits the input to the expected match and returns the remaining string
-func (p *Parameter) Match(input string) (string, string) {
-	match, remaining, _ := p.matcher(input)
-	return match, strings.TrimLeft(remaining, ` `)
+func (p *Parameter) Match(input string) (interface{}, string, error) {
+	match, remaining, ok := p.matcher(input)
+	if !ok {
+		return nil, remaining, errors.New("Could not match the parameter")
+	}
+
+	obj, err := p.converter(match)
+	return obj, strings.TrimLeft(remaining, ` `), err
 }
 
 // SetMatcher sets the matching algorithm for this parameter
 func (p *Parameter) SetMatcher(matcher func(string) (string, string, bool)) {
 	p.matcher = matcher
-}
-
-// Convert the input into the expected object
-func (p *Parameter) Convert(input string) (interface{}, error) {
-	return p.converter(input)
 }
 
 // SetConverter changes the convert function
