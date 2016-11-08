@@ -25,9 +25,9 @@ var _ = Describe("Parameter", func() {
 			match, _ := vMatch.(string)
 			Expect(match).To(Equal("this"))
 		})
-		It("should return `is the test string` as the remainder", func() {
+		It("should return ` is the test string` as the remainder", func() {
 			_, remain, _ := param.Match(input)
-			Expect(remain).To(Equal("is the test string"))
+			Expect(remain).To(Equal(" is the test string"))
 		})
 	})
 })

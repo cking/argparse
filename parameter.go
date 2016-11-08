@@ -3,11 +3,10 @@ package argparse
 import (
 	"errors"
 	"regexp"
-	"strings"
 )
 
 var (
-	defaultMatcherRegExp = regexp.MustCompile(`^(\S*)\s*`)
+	defaultMatcherRegExp = regexp.MustCompile(`^(\S*)`)
 )
 
 // Parameter object
@@ -48,7 +47,7 @@ func (p *Parameter) Match(input string) (interface{}, string, error) {
 	}
 
 	obj, err := p.converter(match)
-	return obj, strings.TrimLeft(remaining, ` `), err
+	return obj, remaining, err
 }
 
 // SetMatcher sets the matching algorithm for this parameter
