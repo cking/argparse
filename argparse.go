@@ -25,7 +25,7 @@ func (p *Parser) Parse(input string) {
 func (p *Parser) Parameter(typeName string) *Parameter {
 	def, ok := p.parameter[typeName]
 	if !ok {
-		def = newParameter()
+		def = NewParameter()
 		p.parameter[typeName] = def
 	}
 
