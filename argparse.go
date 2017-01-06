@@ -74,7 +74,7 @@ func (p *Parser) createExpression(format string, ignoreWhitespace bool) func(str
 	}
 
 	// convert matches into an easier to use version
-	expr := make([]expression, len(matches))
+	var expr []expression
 	rews := regexp.MustCompile(`\s+`)
 	for _, match := range matches {
 		if len(match[1]) > 0 {
