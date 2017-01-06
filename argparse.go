@@ -10,7 +10,7 @@ import (
 // Parser object
 type Parser struct {
 	format     string
-	parameter  map[string]*Parameter
+	parameter  ParameterMap
 	expression func(string) (*Match, error)
 }
 
@@ -28,13 +28,16 @@ type expression struct {
 	value string
 }
 
+// ParameterMap is the map to define parameters
+type ParameterMap map[string]*Parameter
+
 var (
 	formatRegexp = regexp.MustCompile(`\<(?P<rkey>\w+)(?::(?P<rtype>\w+))?\>|\[(?P<okey>\w+)(?::(?P<otype>\w+))?\]|(?:\\[\[<]|[^\[<])+`)
 )
 
 // New create a new Parser object
 func New(format string) *Parser {
-	p := &Parser{format, map[string]*Parameter{
+	p := &Parser{format, ParameterMap{
 		"str": NewDefaultParameter(StringMatcher),
 		"int": NewDefaultParameter(IntegerMatcher),
 	},
@@ -146,7 +149,7 @@ func (p *Parser) SetParameter(typeName string, param *Parameter) {
 }
 
 // SetParameters sets a map of parameter description
-func (p *Parser) SetParameters(params map[string]*Parameter) {
+func (p *Parser) SetParameters(params ParameterMap) {
 	for k, v := range params {
 		p.SetParameter(k, v)
 	}
