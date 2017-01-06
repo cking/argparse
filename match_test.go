@@ -31,12 +31,10 @@ var _ = Describe("Match", func() {
 
 		It("should have a match `i` of type int", func() {
 			Expect(matches.GetInteger("i")).To(BeNumerically("==", 42))
-			Expect(matches.GetString("i")).To(BeNil())
 		})
 
 		It("should have a match `s` of type string", func() {
 			Expect(matches.GetString("s")).To(BeEquivalentTo("str"))
-			Expect(matches.GetInteger("s")).To(BeNil())
 		})
 
 		It("should have a match `o` of value nil", func() {

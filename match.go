@@ -27,19 +27,19 @@ func (m *Match) GetMatch(key string) interface{} {
 }
 
 // GetInteger returns the result of a parameter as an integer
-func (m *Match) GetInteger(key string) interface{} {
+func (m *Match) GetInteger(key string) int {
 	v, ok := m.GetMatch(key).(int)
 	if ok {
 		return v
 	}
-	return nil
+	return -1
 }
 
 // GetString returns the result of a parameter as a string
-func (m *Match) GetString(key string) interface{} {
+func (m *Match) GetString(key string) string {
 	v, ok := m.GetMatch(key).(string)
 	if ok {
 		return v
 	}
-	return nil
+	return ""
 }
