@@ -159,6 +159,10 @@ func (p *Parser) SetParameters(params ParameterMap) {
 
 // Parameter gets the parameter description for the given type name
 func (p *Parser) Parameter(typeName string) *Parameter {
+	if len(typeName) == 0 {
+		typeName = "string"
+	}
+
 	def, ok := p.parameter[typeName]
 	if !ok {
 		def = NewParameter()
