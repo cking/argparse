@@ -31,6 +31,29 @@ var _ = Describe("Parameter", func() {
 		})
 	})
 
+	Context("With the all matcher and converter", func() {
+		param := NewDefaultParameter(AllMatcher)
+		input := "this is the test string"
+
+		It("should match the test string", func() {
+			Expect(param.Matches(input)).To(BeTrue())
+		})
+		It("should convert the match to string", func() {
+			vMatch, _, _ := param.Match(input)
+			_, found := vMatch.(string)
+			Expect(found).To(BeTrue())
+		})
+		It("should return the full test string of type `string` as the match", func() {
+			vMatch, _, _ := param.Match(input)
+			match, _ := vMatch.(string)
+			Expect(match).To(Equal(input))
+		})
+		It("should return nothing as the remainder", func() {
+			_, remain, _ := param.Match(input)
+			Expect(remain).To(BeEmpty())
+		})
+	})
+
 	Context("With the integer matcher and converter", func() {
 		param := NewDefaultParameter(IntegerMatcher)
 		validInput := "42"

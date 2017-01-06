@@ -14,6 +14,8 @@ const (
 	StringMatcher ParameterMatcher = 0
 	// IntegerMatcher converts the input to an integer
 	IntegerMatcher = iota
+	// AllMatcher matches everything leftover
+	AllMatcher = iota
 )
 
 var (
@@ -50,6 +52,8 @@ func NewDefaultParameter(matcher ParameterMatcher) *Parameter {
 		param.SetConverter(func(input string) (interface{}, error) {
 			return strconv.Atoi(input)
 		})
+	case AllMatcher:
+		param.SetMatcherRegexp(regexp.MustCompile(`(.*)`))
 	}
 
 	return param
