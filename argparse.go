@@ -132,6 +132,10 @@ func (p *Parser) createExpression(format string, ignoreWhitespace bool) func(str
 			}
 		}
 
+		if len(strings.TrimSpace(input)) > 0 {
+			return m, fmt.Errorf("failed to consume all input")
+		}
+
 		return m, nil
 	}
 }

@@ -13,6 +13,7 @@ var _ = Describe("Argparse", func() {
 	eResp := "this is required: 42, this is optional: guess-what"
 	wResp := "this is required: a, this is optional: wrong format"
 	oResp := "this is required 42, this is optional: "
+	fResp := "this is required: 42, this is optional: guess-what asdew"
 
 	Context("With an empty format string", func() {
 		emptyParser := New("")
@@ -76,6 +77,11 @@ var _ = Describe("Argparse", func() {
 			Expect(err).To(HaveOccurred())
 		})
 
+		It("should not parse an input string with extra junk", func() {
+			_, err := explicitParser.Parse(fResp)
+			Expect(err).To(HaveOccurred())
+		})
+
 		It("should match the input", func() {
 			_, err := explicitParser.Parse(eResp)
 			Expect(err).ToNot(HaveOccurred())
@@ -106,6 +112,11 @@ var _ = Describe("Argparse", func() {
 
 		It("should not parse an empty input string", func() {
 			_, err := implicitParser.Parse("")
+			Expect(err).To(HaveOccurred())
+		})
+
+		It("should not parse an input string with extra junk", func() {
+			_, err := implicitParser.Parse(fResp)
 			Expect(err).To(HaveOccurred())
 		})
 
