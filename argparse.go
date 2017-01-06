@@ -91,8 +91,6 @@ func (p *Parser) createExpression(format string, ignoreWhitespace bool) func(str
 		}
 	}
 
-	print(expr)
-
 	return func(input string) (*Match, error) {
 		var v interface{}
 		m := NewMatch()
